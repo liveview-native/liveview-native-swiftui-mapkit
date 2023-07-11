@@ -8,6 +8,59 @@
 import SwiftUI
 import MapKit
 
+/// The positioning of a ``Map``'s camera.
+///
+/// Create a native binding to synchronize the map camera.
+///
+/// ```elixir
+/// defmodule MyAppWeb.MapLive do
+///     native_binding :position, Map, %{ type: :automatic }
+/// end
+/// ```
+///
+/// There are several types of camera that can be created.
+///
+/// ### `automatic`
+/// Use the automatic type to let the system decide the best placement for the camera.
+///
+/// ```elixir
+/// %{ type: :automatic }
+/// ```
+///
+/// ### `camera`
+/// Provide a custom ``LiveViewNativeMapKit/_MapKit_SwiftUI/MapCamera``.
+///
+/// ```elixir
+/// %{ type: :camera, camera: %{ center_coordinate: [38.8951, -77.0364], distance: 100_000 } }
+/// ```
+///
+/// ### `item`
+/// Display a specific coordinate.
+///
+/// ```elixir
+/// %{ type: :item, item: [38.8951, -77.0364], allows_automatic_pitch: false }
+/// ```
+///
+/// ### `rect`
+/// Display a custom ``LiveViewNativeMapKit/MapKit/MKMapRect`` boundary.
+///
+/// ```elixir
+/// %{ type: :rect, rect: [origin: [38.8951, -77.0364], size: [100, 100]] }
+/// ```
+///
+/// ### `region`
+/// Display a region around a central point.
+///
+/// ```elixir
+/// %{ type: :region, center: [38.8951, -77.0364], latitude_delta: 1, longitude_delta: 1 }
+/// ```
+///
+/// ### `user_location`
+/// Follow the user's current location (if permission is granted). Otherwise, use the `fallback` camera position.
+///
+/// ```elixir
+/// %{ type: :user_location, follows_heading: true, fallback: %{ type: :automatic } }
+/// ```
 extension MapCameraPosition: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -75,24 +128,24 @@ extension MapCameraPosition: Codable {
         case item
         case rect
         case region
-        case userLocation
+        case userLocation = "user_location"
     }
     
-    enum CodingKeys: CodingKey {
+    enum CodingKeys: String, CodingKey {
         case type
         
         case camera
         
         case item
-        case allowsAutomaticPitch
+        case allowsAutomaticPitch = "allows_automatic_pitch"
         
         case rect
         
         case center
-        case latitudeDelta
-        case longitudeDelta
+        case latitudeDelta = "latitude_delta"
+        case longitudeDelta = "longitude_delta"
         
-        case followsHeading
+        case followsHeading = "follows_heading"
         case fallback
     }
 }

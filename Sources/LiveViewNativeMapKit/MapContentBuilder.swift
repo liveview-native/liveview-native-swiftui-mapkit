@@ -16,21 +16,32 @@ enum MapContentBuilder: ContentBuilder {
     
     enum ModifierType: String, Decodable {
         case foregroundStyle = "foreground_style"
+        case tint
     }
     
     typealias Content = any MapContent
     
     static func lookup<R: RootRegistry>(_ tag: TagName, element: ElementNode, context: Context<R>) -> Content {
-        switch tag {
+        let content = switch tag {
         case .marker:
-            return EmptyMapContent()
+            try! Marker<R>(element: element, context: context)
         }
+        func applyTag(_ content: some MapContent) -> Content {
+            if let tag = element.attributeValue(for: "tag") {
+                return content.tag(tag)
+            } else {
+                return content
+            }
+        }
+        return applyTag(content)
     }
     
     static func decodeModifier<R: RootRegistry>(_ type: ModifierType, from decoder: Decoder, registry _: R.Type) throws -> any ContentModifier<MapContentBuilder> {
         switch type {
         case .foregroundStyle:
             return try ForegroundStyleModifier(from: decoder)
+        case .tint:
+            return try TintModifier(from: decoder)
         }
     }
     

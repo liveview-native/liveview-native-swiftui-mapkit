@@ -1,6 +1,7 @@
 import LiveViewNative
 import SwiftUI
 
+/// A registry that includes the ``Map`` element and associated modifiers.
 public enum MapKitRegistry<Root: RootRegistry>: CustomRegistry {
     public enum TagName: String {
         case map = "Map"

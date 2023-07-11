@@ -10,6 +10,15 @@ import MapKit
 import LiveViewNative
 import LiveViewNativeCore
 
+/// The allowed interactions on a ``Map``.
+///
+/// Possible values:
+/// * `all`
+/// * `pan`
+/// * `pitch`
+/// * `rotate`
+/// * `zoom`
+/// * A comma-separate list of these values
 extension MapInteractionModes: AttributeDecodable {
     public init(from attribute: LiveViewNativeCore.Attribute?) throws {
         guard let value = attribute?.value

@@ -8,6 +8,19 @@
 import SwiftUI
 import MapKit
 
+/// Include/exclude types of points of interest.
+///
+/// Use `all` and `excluding_all` to enable/disable all points of interest.
+///
+/// Alternatively, use the `including` or `excluding` atom, along with a list of categories.
+/// See [`MKPointOfInterestCategory`](https://developer.apple.com/documentation/mapkit/mkpointofinterestcategory) for a list of possible values.
+///
+/// - Note: Categories have names that start with `MKPOICategory`.
+///
+/// ```elixir
+/// {:including, ["MKPOICategoryAirport", "MKPOICategoryEVCharger"]}
+/// {:excluding, ["MKPOICategoryPublicTransport"]}
+/// ```
 extension PointOfInterestCategories: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
