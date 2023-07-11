@@ -58,10 +58,6 @@ struct ContentView: View {
 To render a map within a SwiftUI HEEx template, use the `Map` element.
 Include map content elements within the map to display custom markers and annotations:
 
-<table>
-<tr>
-<td>
-
 ```elixir
 defmodule MyAppWeb.MapLive do
   use Phoenix.LiveView
@@ -93,11 +89,4 @@ defmodule MyAppWeb.MapLive do
 end
 ```
 
-</td>
-<td>
-
 ![LiveView Native MapKit screenshot](./Sources/LiveViewNativeMapKit/LiveViewNativeMapKit.docc/Resources/example.png)
-
-</td>
-</tr>
-</table>
