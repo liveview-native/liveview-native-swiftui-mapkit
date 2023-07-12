@@ -7,6 +7,8 @@
 
 import SwiftUI
 import MapKit
+import LiveViewNative
+import LiveViewNativeCore
 
 /// Include/exclude types of points of interest.
 ///
@@ -53,9 +55,3 @@ extension PointOfInterestCategories: Decodable {
         case categories
     }
 }
-
-//extension MKPointOfInterestCategory: Decodable {
-//    public init(from decoder: Decoder) throws {
-//        self.init(rawValue: try decoder.singleValueContainer().decode(String.self))
-//    }
-//}
