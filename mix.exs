@@ -21,7 +21,7 @@ defmodule LiveViewNativeSwiftUiMapKit.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:live_view_native_swift_ui, path: "/Users/carson.katri/Documents/LiveViewNative/Packages/liveview-client-swiftui"},
+      {:live_view_native_swift_ui, "~> 0.0.7"},
     ]
   end
 end
