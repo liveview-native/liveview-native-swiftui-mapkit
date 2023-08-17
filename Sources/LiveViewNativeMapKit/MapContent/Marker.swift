@@ -84,7 +84,7 @@ struct Marker<R: RootRegistry>: MapContent {
     @MapKit.MapContentBuilder
     var body: some MapContent {
         if let monogram {
-            MapKit.Marker(title, monogram: monogram, coordinate: coordinate)
+            MapKit.Marker(title, monogram: Text(monogram), coordinate: coordinate)
         } else if let image {
             MapKit.Marker(title, image: image, coordinate: coordinate)
         } else if let systemImage {
