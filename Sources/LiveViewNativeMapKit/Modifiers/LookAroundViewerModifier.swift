@@ -29,7 +29,7 @@ import LiveViewNative
 struct LookAroundViewerModifier: ViewModifier, Decodable {
     /// A native binding that synchronizes the presentation of the viewer.
     @_documentation(visibility: public)
-    @LiveBinding private var isPresented: Bool
+    @ChangeTracked private var isPresented: Bool
 
     /// The start location of the viewer.
     @_documentation(visibility: public)
@@ -58,7 +58,7 @@ struct LookAroundViewerModifier: ViewModifier, Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self._isPresented = try LiveBinding(decoding: .isPresented, in: container)
+        self._isPresented = try ChangeTracked(decoding: .isPresented, in: container)
         self._onDismiss = try container.decode(Event.self, forKey: .onDismiss)
         self.initialScene = try container.decodeIfPresent(CLLocationCoordinate2D.self, forKey: .initialScene)
         self.allowsNavigation = try container.decode(Bool.self, forKey: .allowsNavigation)
@@ -68,7 +68,7 @@ struct LookAroundViewerModifier: ViewModifier, Decodable {
     
     func body(content: Content) -> some View {
         content.lookAroundViewer(
-            isPresented: $isPresented,
+            isPresented: $isPresented.value,
             initialScene: resolvedScene,
             allowsNavigation: allowsNavigation,
             showsRoadLabels: showsRoadLabels,
