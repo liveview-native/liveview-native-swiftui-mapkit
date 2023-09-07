@@ -65,11 +65,13 @@ import LiveViewNativeCore
 /// ```
 extension MapCameraPosition: Codable, AttributeDecodable {
     public init(from attribute: LiveViewNativeCore.Attribute?) throws {
-        //        let container = try decoder.container(keyedBy: CodingKeys.self)
-        //        switch try container.decode(MapCameraPositionType.self, forKey: .type) {
-        let value = attribute?.value
-//        else { throw AttributeDecodingError.missingAttribute(Self.self)
-        let container = try JSONDecoder().decode(Self.self, from: Data(value.utf8))
+        guard let value = attribute?.value else { throw  AttributeDecodingError.missingAttribute(Self.self) }
+        self = try JSONDecoder().decode(Self.self, from: Data(value.utf8))
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
         switch try container.decode(MapCameraPositionType.self, forKey: .type) {
         case .automatic:
             self = .automatic
