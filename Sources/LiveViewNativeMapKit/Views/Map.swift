@@ -85,7 +85,7 @@ struct Map<R: RootRegistry>: View {
     ///
     /// See ``LiveViewNativeMapKit/_MapKit_SwiftUI/MapCameraPosition`` for more details.
     @_documentation(visibility: public)
-    @LiveBinding(attribute: "position") private var position: MapCameraPosition = .automatic
+    @ChangeTracked(attribute: "position") private var position: MapCameraPosition = .automatic
     
     /// The latitude of the boundary center.
     @_documentation(visibility: public)
@@ -117,7 +117,7 @@ struct Map<R: RootRegistry>: View {
     
     /// The currently selected map element, represented by its `tag` attribute.
     @_documentation(visibility: public)
-    @LiveBinding(attribute: "selection") private var selection: String? = nil
+    @ChangeTracked(attribute: "selection") private var selection: String? = nil
     
     var bounds: MapCameraBounds {
         if let boundsLatitude,
