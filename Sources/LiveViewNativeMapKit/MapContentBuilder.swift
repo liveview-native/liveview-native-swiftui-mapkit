@@ -11,18 +11,22 @@ import LiveViewNative
 
 enum MapContentBuilder: ContentBuilder {
     enum TagName: String {
+        case mapPolyline = "MapPolyline"
         case marker = "Marker"
     }
     
     enum ModifierType: String, Decodable {
         case foregroundStyle = "foreground_style"
+        case stroke
         case tint
     }
     
     typealias Content = any MapContent
     
     static func lookup<R: RootRegistry>(_ tag: TagName, element: ElementNode, context: Context<R>) -> Content {
-        let content = switch tag {
+        let content: any MapContent = switch tag {
+        case .mapPolyline:
+            try! MapPolyline<R>(element: element, context: context)
         case .marker:
             try! Marker<R>(element: element, context: context)
         }
@@ -40,6 +44,8 @@ enum MapContentBuilder: ContentBuilder {
         switch type {
         case .foregroundStyle:
             return try ForegroundStyleModifier(from: decoder)
+        case .stroke:
+            return try StrokeModifier(from: decoder)
         case .tint:
             return try TintModifier(from: decoder)
         }
