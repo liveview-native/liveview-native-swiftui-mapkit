@@ -135,7 +135,7 @@ struct Map<R: RootRegistry>: View {
         }
     }
     
-    @ContentBuilderContext<R> private var context
+    @ContentBuilderContext<R, MapContentBuilder> private var context
     @ObservedElement(observeChildren: true) private var element
     
     var body: some View {

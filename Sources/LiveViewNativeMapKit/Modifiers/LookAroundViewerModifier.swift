@@ -8,6 +8,7 @@
 import SwiftUI
 import MapKit
 import LiveViewNative
+import LiveViewNativeStylesheet
 
 /// Present a look-around viewer at a specific coordinate.
 /// 
@@ -15,7 +16,7 @@ import LiveViewNative
 /// Set the ``initialScene`` to change the location of the viewer.
 /// 
 /// ```elixir
-/// look_around_viewer(is_presented: :show_viewer, initial_scene: [40.730610, -73.935242])
+/// lookAroundViewer(is_presented: attr("show_viewer"), initial_scene: [40.730610, -73.935242])
 /// ```
 /// 
 /// ## Arguments
@@ -25,45 +26,46 @@ import LiveViewNative
 /// * ``showsRoadLabels``
 /// * ``pointsOfInterest``
 /// * ``onDismiss``
-@_documentation(visibility: public)
-struct LookAroundViewerModifier: ViewModifier, Decodable {
+@ParseableExpression
+struct LookAroundViewerModifier: ViewModifier {
+    static let name = "lookAroundViewer"
+    
     /// A native binding that synchronizes the presentation of the viewer.
-    @_documentation(visibility: public)
     @ChangeTracked private var isPresented: Bool
 
     /// The start location of the viewer.
-    @_documentation(visibility: public)
     private let initialScene: CLLocationCoordinate2D?
 
     /// Allow the user to navigate within the viewer. Defaults to `true`.
-    @_documentation(visibility: public)
     private let allowsNavigation: Bool
 
     /// Enable/disable road labels on the viewer. Defaults to `true`.
-    @_documentation(visibility: public)
     private let showsRoadLabels: Bool
 
     /// Enable/disable certain point of interest categories.
     /// 
     /// See ``LiveViewNativeMapKit/_MapKit_SwiftUI/PointOfInterestCategories`` for more details.
-    @_documentation(visibility: public)
     private let pointsOfInterest: PointOfInterestCategories
 
     /// The event to call when the viewer is closed.
-    @_documentation(visibility: public)
     @Event private var onDismiss: Event.EventHandler
     
     @State private var resolvedScene: MKLookAroundScene?
     
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self._isPresented = try ChangeTracked(decoding: CodingKeys.isPresented, in: decoder)
-        self._onDismiss = try container.decode(Event.self, forKey: .onDismiss)
-        self.initialScene = try container.decodeIfPresent(CLLocationCoordinate2D.self, forKey: .initialScene)
-        self.allowsNavigation = try container.decode(Bool.self, forKey: .allowsNavigation)
-        self.showsRoadLabels = try container.decode(Bool.self, forKey: .showsRoadLabels)
-        self.pointsOfInterest = try container.decodeIfPresent(PointOfInterestCategories.self, forKey: .pointsOfInterest) ?? .all
+    init(
+        isPresented: ChangeTracked<Bool>,
+        initialScene: CLLocationCoordinate2D?,
+        allowsNavigation: Bool = true,
+        showsRoadLabels: Bool = true,
+        pointsOfInterest: PointOfInterestCategories = .all,
+        onDismiss: Event = Event()
+    ) {
+        self._isPresented = isPresented
+        self.initialScene = initialScene
+        self.allowsNavigation = allowsNavigation
+        self.showsRoadLabels = showsRoadLabels
+        self.pointsOfInterest = pointsOfInterest
+        self._onDismiss = onDismiss
     }
     
     func body(content: Content) -> some View {
@@ -94,14 +96,5 @@ struct LookAroundViewerModifier: ViewModifier, Decodable {
             self.latitude = coordinate.latitude
             self.longitude = coordinate.longitude
         }
-    }
-    
-    enum CodingKeys: CodingKey {
-        case isPresented
-        case initialScene
-        case allowsNavigation
-        case showsRoadLabels
-        case pointsOfInterest
-        case onDismiss
     }
 }
