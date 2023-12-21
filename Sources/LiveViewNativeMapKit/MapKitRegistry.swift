@@ -24,7 +24,7 @@ public enum MapKitRegistry<Root: RootRegistry>: CustomRegistry {
         let storage: Storage
         
         public static func parser(in context: ParseableModifierContext) -> some Parser<Substring.UTF8View, Self> {
-            OneOf {
+            CustomModifierGroupParser(output: Self.self) {
                 LookAroundViewerModifier.parser(in: context).map({ Self(storage: .lookAroundViewer($0)) })
                 MapContentBuilder.ModifierType.parser(in: context).map({ _ in Self(storage: .noop) })
             }
