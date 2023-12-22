@@ -5,6 +5,7 @@ import SwiftUI
 public enum MapKitRegistry<Root: RootRegistry>: CustomRegistry {
     public enum TagName: String {
         case map = "Map"
+        case lookAroundPreview = "LookAroundPreview"
     }
     
     public enum ModifierType: String, Decodable {
@@ -15,6 +16,8 @@ public enum MapKitRegistry<Root: RootRegistry>: CustomRegistry {
         switch name {
         case .map:
             Map<Root>()
+        case .lookAroundPreview:
+            LookAroundPreview()
         }
     }
     
