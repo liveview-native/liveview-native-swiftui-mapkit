@@ -135,11 +135,12 @@ struct Map<R: RootRegistry>: View {
         }
     }
     
-    @ContentBuilderContext<R> private var context
+    @ContentBuilderContext<R, MapContentBuilder> private var context
     @ObservedElement(observeChildren: true) private var element
     
     var body: some View {
-        unbox(try! MapContentBuilder.buildChildren(of: element, in: context))
+        let content = try! MapContentBuilder.buildChildren(of: element, in: context)
+        return unbox(content)
     }
     
     func unbox(_ content: some MapContent) -> AnyView {

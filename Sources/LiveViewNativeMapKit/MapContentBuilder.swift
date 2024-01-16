@@ -8,15 +8,38 @@
 import SwiftUI
 import MapKit
 import LiveViewNative
+import LiveViewNativeStylesheet
 
 enum MapContentBuilder: ContentBuilder {
     enum TagName: String {
         case marker = "Marker"
     }
     
-    enum ModifierType: String, Decodable {
-        case foregroundStyle = "foreground_style"
-        case tint
+    enum ModifierType: ContentModifier {
+        typealias Builder = MapContentBuilder
+        
+        case foregroundStyle(ForegroundStyleModifier)
+        case tint(TintModifier)
+        
+        static func parser(in context: ParseableModifierContext) -> some Parser<Substring.UTF8View, Self> {
+            OneOf {
+                ForegroundStyleModifier.parser(in: context).map(Self.foregroundStyle)
+                TintModifier.parser(in: context).map(Self.tint)
+            }
+        }
+        
+        func apply<R>(
+            to content: Builder.Content,
+            on element: ElementNode,
+            in context: Builder.Context<R>
+        ) -> Builder.Content where R : RootRegistry {
+            switch self {
+            case .foregroundStyle(let modifier):
+                return modifier.apply(to: content, on: element, in: context)
+            case .tint(let modifier):
+                return modifier.apply(to: content, on: element, in: context)
+            }
+        }
     }
     
     typealias Content = any MapContent
@@ -34,15 +57,6 @@ enum MapContentBuilder: ContentBuilder {
             }
         }
         return applyTag(content)
-    }
-    
-    static func decodeModifier<R: RootRegistry>(_ type: ModifierType, from decoder: Decoder, registry _: R.Type) throws -> any ContentModifier<MapContentBuilder> {
-        switch type {
-        case .foregroundStyle:
-            return try ForegroundStyleModifier(from: decoder)
-        case .tint:
-            return try TintModifier(from: decoder)
-        }
     }
     
     static func empty() -> Content {

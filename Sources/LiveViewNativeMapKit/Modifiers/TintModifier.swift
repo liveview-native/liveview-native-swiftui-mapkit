@@ -8,11 +8,19 @@
 import SwiftUI
 import MapKit
 import LiveViewNative
+import LiveViewNativeStylesheet
 
+@ParseableExpression
 struct TintModifier: ContentModifier {
     typealias Builder = MapContentBuilder
     
+    static let name = "tint"
+    
     let color: Color
+    
+    init(_ color: Color) {
+        self.color = color
+    }
     
     func apply<R: RootRegistry>(
         to content: Builder.Content,

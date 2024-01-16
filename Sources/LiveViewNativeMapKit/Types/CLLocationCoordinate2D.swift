@@ -7,6 +7,7 @@
 
 import CoreLocation
 import LiveViewNative
+import LiveViewNativeStylesheet
 import LiveViewNativeCore
 
 /// A latitude/longitude pair, represented as a list.
@@ -30,5 +31,24 @@ extension CLLocationCoordinate2D: Codable {
         var container = encoder.unkeyedContainer()
         try container.encode(latitude)
         try container.encode(longitude)
+    }
+}
+
+extension CLLocationCoordinate2D: ParseableModifierValue {
+    public static func parser(in context: ParseableModifierContext) -> some Parser<Substring.UTF8View, Self> {
+        ParseableCLLocationCoordinate2D.parser(in: context).map({ Self.init(latitude: $0.latitude, longitude: $0.longitude) })
+    }
+    
+    @ParseableExpression
+    struct ParseableCLLocationCoordinate2D {
+        static let name = "CLLocationCoordinate2D"
+        
+        let latitude: Double
+        let longitude: Double
+        
+        init(latitude: Double, longitude: Double) {
+            self.latitude = latitude
+            self.longitude = longitude
+        }
     }
 }
