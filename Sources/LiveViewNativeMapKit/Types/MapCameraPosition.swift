@@ -64,9 +64,57 @@ import LiveViewNativeCore
 /// %{ type: :user_location, follows_heading: true, fallback: %{ type: :automatic } }
 /// ```
 extension MapCameraPosition: Codable, AttributeDecodable {
-    public init(from attribute: LiveViewNativeCore.Attribute?) throws {
-        guard let value = attribute?.value else { throw  AttributeDecodingError.missingAttribute(Self.self) }
-        self = try JSONDecoder().decode(Self.self, from: Data(value.utf8))
+    public init(from attribute: LiveViewNativeCore.Attribute?, on element: ElementNode) throws {
+        guard let namespace = attribute?.name.name,
+              let type = attribute?.value
+        else { throw  AttributeDecodingError.missingAttribute(Self.self) }
+        switch type {
+        case "automatic":
+            self = .automatic
+        case "camera":
+            self = .camera(.init(
+                centerCoordinate: .init(
+                    latitude: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "latitude")),
+                    longitude: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "longitude"))
+                ),
+                distance: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "distance"))
+            ))
+        case "item":
+            self = .item(
+                MKMapItem(
+                    placemark: .init(coordinate: .init(
+                        latitude: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "latitude")),
+                        longitude: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "longitude"))
+                    ))
+                ),
+                allowsAutomaticPitch: try element.attributeValue(Bool.self, for: .init(namespace: namespace, name: "allows-automatic-pitch"))
+            )
+        case "rect":
+            self = .rect(MKMapRect(
+                x: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "x")),
+                y: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "y")),
+                width: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "width")),
+                height: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "height"))
+            ))
+        case "region":
+            self = .region(MKCoordinateRegion(
+                center: .init(
+                    latitude: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "latitude")),
+                    longitude: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "longitude"))
+                ),
+                span: .init(
+                    latitudeDelta: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "latitude-delta")),
+                    longitudeDelta: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "longitude-delta"))
+                )
+            ))
+        case "user-location":
+            self = .userLocation(
+                followsHeading: try element.attributeValue(Bool.self, for: .init(namespace: namespace, name: "follows-heading")),
+                fallback: try Self.init(from: element.attribute(named: "user-location-fallback"), on: element)
+            )
+        default:
+            throw AttributeDecodingError.badValue(Self.self)
+        }
     }
     
     public init(from decoder: Decoder) throws {
