@@ -60,7 +60,7 @@ import LiveViewNative
 /// To only allow certain interactions, use the ``interactionModes`` attribute.
 ///
 /// ```html
-/// <Map interaction-modes="pan,rotate" />
+/// <Map interactionModes="pan,rotate" />
 /// ```
 ///
 /// Set the `bounds:x` attributes to customize the area of the map that can be viewed.
@@ -72,11 +72,11 @@ import LiveViewNative
 /// <Map
 ///   bounds:latitude={38.8951}
 ///   bounds:longitude={-77.0364}
-///   bounds:latitude-delta={2}
-///   bounds:longitude-delta={2}
+///   bounds:latitudeDelta={2}
+///   bounds:longitudeDelta={2}
 ///
-///   bounds:minimum-distance={750_000}
-///   bounds:maximum-distance={1_000_000}
+///   bounds:minimumDistance={750_000}
+///   bounds:maximumDistance={1_000_000}
 /// />
 /// ```
 @_documentation(visibility: public)

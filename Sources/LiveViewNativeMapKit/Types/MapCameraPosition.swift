@@ -33,14 +33,14 @@ import LiveViewNativeCore
 /// Provide a custom ``LiveViewNativeMapKit/_MapKit_SwiftUI/MapCamera``.
 ///
 /// ```elixir
-/// %{ type: :camera, camera: %{ center_coordinate: [38.8951, -77.0364], distance: 100_000 } }
+/// %{ type: :camera, camera: %{ centerCoordinate: [38.8951, -77.0364], distance: 100_000 } }
 /// ```
 ///
 /// ### `item`
 /// Display a specific coordinate.
 ///
 /// ```elixir
-/// %{ type: :item, item: [38.8951, -77.0364], allows_automatic_pitch: false }
+/// %{ type: :item, item: [38.8951, -77.0364], allowsAutomaticPitch: false }
 /// ```
 ///
 /// ### `rect`
@@ -54,14 +54,14 @@ import LiveViewNativeCore
 /// Display a region around a central point.
 ///
 /// ```elixir
-/// %{ type: :region, center: [38.8951, -77.0364], latitude_delta: 1, longitude_delta: 1 }
+/// %{ type: :region, center: [38.8951, -77.0364], latitudeDelta: 1, longitudeDelta: 1 }
 /// ```
 ///
 /// ### `user_location`
 /// Follow the user's current location (if permission is granted). Otherwise, use the `fallback` camera position.
 ///
 /// ```elixir
-/// %{ type: :user_location, follows_heading: true, fallback: %{ type: :automatic } }
+/// %{ type: :userLocation, followsHeading: true, fallback: %{ type: :automatic } }
 /// ```
 extension MapCameraPosition: Codable, AttributeDecodable {
     public init(from attribute: LiveViewNativeCore.Attribute?, on element: ElementNode) throws {
@@ -87,7 +87,7 @@ extension MapCameraPosition: Codable, AttributeDecodable {
                         longitude: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "longitude"))
                     ))
                 ),
-                allowsAutomaticPitch: try element.attributeValue(Bool.self, for: .init(namespace: namespace, name: "allows-automatic-pitch"))
+                allowsAutomaticPitch: try element.attributeValue(Bool.self, for: .init(namespace: namespace, name: "allowsAutomaticPitch"))
             )
         case "rect":
             self = .rect(MKMapRect(
@@ -103,13 +103,13 @@ extension MapCameraPosition: Codable, AttributeDecodable {
                     longitude: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "longitude"))
                 ),
                 span: .init(
-                    latitudeDelta: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "latitude-delta")),
-                    longitudeDelta: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "longitude-delta"))
+                    latitudeDelta: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "latitudeDelta")),
+                    longitudeDelta: try element.attributeValue(Double.self, for: .init(namespace: namespace, name: "longitudeDelta"))
                 )
             ))
-        case "user-location":
+        case "userLocation":
             self = .userLocation(
-                followsHeading: try element.attributeValue(Bool.self, for: .init(namespace: namespace, name: "follows-heading")),
+                followsHeading: try element.attributeValue(Bool.self, for: .init(namespace: namespace, name: "followsHeading")),
                 fallback: try Self.init(from: element.attribute(named: "user-location-fallback"), on: element)
             )
         default:
@@ -184,7 +184,7 @@ extension MapCameraPosition: Codable, AttributeDecodable {
         case item
         case rect
         case region
-        case userLocation = "user_location"
+        case userLocation
     }
     
     enum CodingKeys: String, CodingKey {
@@ -193,15 +193,15 @@ extension MapCameraPosition: Codable, AttributeDecodable {
         case camera
         
         case item
-        case allowsAutomaticPitch = "allows_automatic_pitch"
+        case allowsAutomaticPitch
         
         case rect
         
         case center
-        case latitudeDelta = "latitude_delta"
-        case longitudeDelta = "longitude_delta"
+        case latitudeDelta
+        case longitudeDelta
         
-        case followsHeading = "follows_heading"
+        case followsHeading
         case fallback
     }
 }

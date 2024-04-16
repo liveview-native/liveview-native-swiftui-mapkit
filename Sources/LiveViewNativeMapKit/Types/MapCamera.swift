@@ -12,12 +12,12 @@ import MapKit
 ///
 /// A map camera can be presented by an Elixir map.
 ///
-/// Include the `center_coordinate` and `distance` keys to create a map camera.
+/// Include the `centerCoordinate` and `distance` keys to create a map camera.
 /// Optionally add the `heading` and `pitch` keys to configure the orientation of the map.
 ///
 /// ```elixir
-/// %{ center_coordinate: [38.8951, -77.0364], distance: 100_000 }
-/// %{ center_coordinate: [38.8951, -77.0364], distance: 100_000, heading: -45, pitch: 15 }
+/// %{ centerCoordinate: [38.8951, -77.0364], distance: 100_000 }
+/// %{ centerCoordinate: [38.8951, -77.0364], distance: 100_000, heading: -45, pitch: 15 }
 /// ```
 extension MapCamera: Codable {
     public init(from decoder: Decoder) throws {
@@ -38,7 +38,7 @@ extension MapCamera: Codable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case centerCoordinate = "center_coordinate"
+        case centerCoordinate
         case distance
         case heading
         case pitch

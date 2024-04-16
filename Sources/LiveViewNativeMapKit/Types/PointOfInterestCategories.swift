@@ -19,8 +19,8 @@ import LiveViewNativeStylesheet
 /// - Note: Categories have names that start with `MKPOICategory`.
 ///
 /// ```elixir
-/// {:including, ["MKPOICategoryAirport", "MKPOICategoryEVCharger"]}
-/// {:excluding, ["MKPOICategoryPublicTransport"]}
+/// .including([.airport, .evCharger])
+/// .excluding([.publicTransport])
 /// ```
 extension PointOfInterestCategories: ParseableModifierValue {
     public static func parser(in context: ParseableModifierContext) -> some Parser<Substring.UTF8View, Self> {
