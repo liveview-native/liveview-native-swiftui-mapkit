@@ -80,7 +80,8 @@ import LiveViewNative
 /// />
 /// ```
 @_documentation(visibility: public)
-struct Map<R: RootRegistry>: View {
+@LiveElement
+struct Map<Root: RootRegistry>: View {
     /// A binding that synchronizes the camera position.
     ///
     /// See ``LiveViewNativeMapKit/_MapKit_SwiftUI/MapCameraPosition`` for more details.
@@ -89,31 +90,31 @@ struct Map<R: RootRegistry>: View {
     
     /// The latitude of the boundary center.
     @_documentation(visibility: public)
-    @Attribute(.init(namespace: "bounds", name: "latitude")) private var boundsLatitude: Double?
+    @LiveAttribute(.init(namespace: "bounds", name: "latitude")) private var boundsLatitude: Double?
     
     /// The longitude of the boundary center.
     @_documentation(visibility: public)
-    @Attribute(.init(namespace: "bounds", name: "longitude")) private var boundsLongitude: Double?
+    @LiveAttribute(.init(namespace: "bounds", name: "longitude")) private var boundsLongitude: Double?
     
     /// The latitude range of the boundary.
     @_documentation(visibility: public)
-    @Attribute(.init(namespace: "bounds", name: "latitude-delta")) private var boundsLatitudeDelta: Double?
+    @LiveAttribute(.init(namespace: "bounds", name: "latitudeDelta")) private var boundsLatitudeDelta: Double?
     
     /// The longitude range of the boundary.
     @_documentation(visibility: public)
-    @Attribute(.init(namespace: "bounds", name: "longitude-delta")) private var boundsLongitudeDelta: Double?
+    @LiveAttribute(.init(namespace: "bounds", name: "longitudeDelta")) private var boundsLongitudeDelta: Double?
     
     /// The closest zoom distance, in meters.
     @_documentation(visibility: public)
-    @Attribute(.init(namespace: "bounds", name: "minimum-distance")) private var boundsMinimumDistance: Double?
+    @LiveAttribute(.init(namespace: "bounds", name: "minimumDistance")) private var boundsMinimumDistance: Double?
     
     /// The furthest zoom distance, in meters.
     @_documentation(visibility: public)
-    @Attribute(.init(namespace: "bounds", name: "maximum-distance")) private var boundsMaximumDistance: Double?
+    @LiveAttribute(.init(namespace: "bounds", name: "maximumDistance")) private var boundsMaximumDistance: Double?
     
     /// The interactions allowed on the map.
     @_documentation(visibility: public)
-    @Attribute("interaction-modes") private var interactionModes: MapInteractionModes = .all
+    private var interactionModes: MapInteractionModes = .all
     
     /// The currently selected map element, represented by its `tag` attribute.
     @_documentation(visibility: public)
@@ -135,7 +136,9 @@ struct Map<R: RootRegistry>: View {
         }
     }
     
-    @ContentBuilderContext<R, MapContentBuilder> private var context
+    @LiveElementIgnored
+    @ContentBuilderContext<Root, MapContentBuilder> private var context
+    @LiveElementIgnored
     @ObservedElement(observeChildren: true) private var element
     
     var body: some View {
