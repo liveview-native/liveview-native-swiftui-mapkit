@@ -1,6 +1,6 @@
 # ``LiveViewNativeMapKit``
 
-`liveview-native-swiftui-mapkit` is an add-on library for LiveView Native. It adds MapKit support for displaying interactive maps.
+`liveview-native-swiftui-mapkit` is an add-on library for [LiveView Native](https://github.com/liveview-native/live_view_native). It adds [MapKit](https://developer.apple.com/documentation/mapkit) support for displaying interactive maps.
 
 ## Installation
 
@@ -11,7 +11,7 @@
 
 ## Usage
 
-When using Swift 5.9+, add the `MapKitRegistry` to the `addons` list of your `#LiveView`.
+Add `.mapKit` to the `addons` list of your `#LiveView`.
 
 ```swift
 import SwiftUI
@@ -22,33 +22,8 @@ struct ContentView: View {
     var body: some View {
         #LiveView(
           .localhost,
-          addons: [MapKitRegistry<_>.self] // 2. Include the `MapKitRegistry`.
+          addons: [.mapKit] // 2. Include the `MapKit` addon.
         )
-    }
-}
-```
-
-If you are on an older version of Swift, add the `MapKitRegistry` to your app's `AggregateRegistry`.
-
-```diff
-import SwiftUI
-import LiveViewNative
-+ import LiveViewNativeMapKit
-+ 
-+ struct MyRegistry: CustomRegistry {
-+     typealias Root = AppRegistries
-+ }
-+ 
-+ struct AppRegistries: AggregateRegistry {
-+     #Registries<
-+         MyRegistry,
-+         MapKitRegistry<Self>
-+     >
-+ }
-
-struct ContentView: View {
-    var body: some View {
-        LiveView<AppRegistries>(.localhost)
     }
 }
 ```
