@@ -1,92 +1,66 @@
-# liveview-native-swiftui-mapkit
-
-## About
+# MapKit for LiveView Native SwiftUI
 
 `liveview-native-swiftui-mapkit` is an add-on library for [LiveView Native](https://github.com/liveview-native/live_view_native). It adds [MapKit](https://developer.apple.com/documentation/mapkit) support for displaying interactive maps.
 
 ## Installation
 
-1. Add this library as a package to your LiveView Native application's Xcode project
-    * In Xcode, select *File* → *Add Packages...*
-    * Enter the package URL `https://github.com/liveview-native/liveview-native-swiftui-mapkit`
-    * Select *Add Package*
+1. In Xcode, select *File → Add Packages...*
+2. Enter the package URL `https://github.com/liveview-native/liveview-native-swiftui-mapkit`
+3. Select *Add Package*
 
 ## Usage
 
-When using Swift 5.9+, add the `MapKitRegistry` to the `addons` list of your `#LiveView`.
+Import `LiveViewNativeMapKit` and add the `MapKitRegistry` to the list of addons on your `LiveView`:
 
 ```swift
 import SwiftUI
 import LiveViewNative
-import LiveViewNativeMapKit // 1. Import the add-on library.
+import LiveViewNativeMapKit
 
 struct ContentView: View {
     var body: some View {
         #LiveView(
-          .localhost,
-          addons: [MapKitRegistry<_>.self] // 2. Include the `MapKitRegistry`.
+            .localhost,
+            addons: [MapKitRegistry<_>.self]
         )
     }
 }
 ```
 
-If you are on an older version of Swift, add the `MapKitRegistry` to your app's `AggregateRegistry`.
+Now you can use the `Map` element in your template.
 
-```diff
-import SwiftUI
-import LiveViewNative
-+ import LiveViewNativeMapKit
-+ 
-+ struct MyRegistry: CustomRegistry {
-+     typealias Root = AppRegistries
-+ }
-+ 
-+ struct AppRegistries: AggregateRegistry {
-+     #Registries<
-+         MyRegistry,
-+         MapKitRegistry<Self>
-+     >
-+ }
+<table>
 
-struct ContentView: View {
-    var body: some View {
-        LiveView<AppRegistries>(.localhost)
-    }
-}
+<tr>
+<td>
+
+```heex
+<Map>
+  <Marker
+    :for={place <- @places}
+    latitude={place.latitude}
+    longitude={place.longitude}
+    system-image={place.icon}
+  >
+    <%= name %>
+  </Marker>
+</Map>
 ```
 
-To render a map within a SwiftUI HEEx template, use the `Map` element.
-Include map content elements within the map to display custom markers and annotations:
+</td>
 
-```elixir
-defmodule MyAppWeb.MapLive do
-  use Phoenix.LiveView
-  use LiveViewNative.LiveView
+<td>
+<img src="./Sources/LiveViewNativeMapKit/LiveViewNativeMapKit.docc/Resources/example.png" alt="LiveView Native MapKit screenshot" width="300" />
+</td>
 
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, places: [
-      %{ name: "Washington, D.C.", coordinate: [38.8951, -77.0364], icon: "building.columns.fill" },
-      %{ name: "New York City", coordinate: [40.730610, -73.935242], icon: "building.2.fill" },
-      %{ name: "Philadelphia", coordinate: [39.9526, -75.1652], icon: "bell.fill" },
-    ])}
-  end
+</tr>
 
-  @impl true
-  def render(%{platform_id: :swiftui} = assigns) do
-    ~SWIFTUI"""
-    <Map>
-      <Marker
-        :for={%{ name: name, coordinate: [latitude, longitude], icon: icon } <- @places}
-        latitude={latitude}
-        longitude={longitude}
-        system-image={icon}
-      >
-        <%= name %>
-      </Marker>
-    </Map>
-    """
-  end
-end
-```
+</table>
 
-![LiveView Native MapKit screenshot](./Sources/LiveViewNativeMapKit/LiveViewNativeMapKit.docc/Resources/example.png)
+## Learn more
+
+You can view documentation on the elements and attributes in this addon from Xcode:
+
+1. In Xcode, select *Product → Build Documentation* in the menu bar
+2. Select *Window → Developer Documentation* (Xcode should open this for you after the documentation is built)
+3. Select *LiveViewNativeMapKit* in the sidebar

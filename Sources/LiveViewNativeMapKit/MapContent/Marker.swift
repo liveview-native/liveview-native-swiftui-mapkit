@@ -24,7 +24,7 @@ import CoreLocation
 /// Provide the ``image``, ``systemImage``, or ``monogram`` attribute to customize the pin icon.
 ///
 /// ```html
-/// <Marker latitude={38.8951} longitude={-77.0364} system-image="building.columns.fill">
+/// <Marker latitude={38.8951} longitude={-77.0364} systemImage="building.columns.fill">
 ///   Washington, D.C.
 /// </Marker>
 /// ```
@@ -62,7 +62,7 @@ struct Marker<R: RootRegistry>: MapContent {
         self.monogram = element.attributeValue(for: "monogram")
         
         self.image = element.attributeValue(for: "image")
-        self.systemImage = element.attributeValue(for: "system-image")
+        self.systemImage = element.attributeValue(for: "systemImage")
         
         self.element = element
         self.context = context
