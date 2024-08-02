@@ -13,7 +13,7 @@
 
 ## Usage
 
-When using Swift 5.9+, add the `MapKitRegistry` to the `addons` list of your `#LiveView`.
+Add `.mapKit` to the `addons` list of your `#LiveView`.
 
 ```swift
 import SwiftUI
@@ -24,33 +24,8 @@ struct ContentView: View {
     var body: some View {
         #LiveView(
           .localhost,
-          addons: [MapKitRegistry<_>.self] // 2. Include the `MapKitRegistry`.
+          addons: [.mapKit] // 2. Include the `MapKit` addon.
         )
-    }
-}
-```
-
-If you are on an older version of Swift, add the `MapKitRegistry` to your app's `AggregateRegistry`.
-
-```diff
-import SwiftUI
-import LiveViewNative
-+ import LiveViewNativeMapKit
-+ 
-+ struct MyRegistry: CustomRegistry {
-+     typealias Root = AppRegistries
-+ }
-+ 
-+ struct AppRegistries: AggregateRegistry {
-+     #Registries<
-+         MyRegistry,
-+         MapKitRegistry<Self>
-+     >
-+ }
-
-struct ContentView: View {
-    var body: some View {
-        LiveView<AppRegistries>(.localhost)
     }
 }
 ```
