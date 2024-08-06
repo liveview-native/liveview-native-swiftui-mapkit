@@ -16,17 +16,17 @@ struct ForegroundStyleModifier: ContentModifier {
     
     static let name = "foregroundStyle"
     
-    let style: AnyShapeStyle
+    let style: AnyShapeStyle.Resolvable
     
     func apply<R: RootRegistry>(
         to content: Builder.Content,
         on element: ElementNode,
         in context: Builder.Context<R>
     ) -> Builder.Content {
-        content.foregroundStyle(style)
+        content.foregroundStyle(style.resolve(on: element, in: LiveContext<R>()))
     }
     
-    init(_ style: AnyShapeStyle) {
+    init(_ style: AnyShapeStyle.Resolvable) {
         self.style = style
     }
 }

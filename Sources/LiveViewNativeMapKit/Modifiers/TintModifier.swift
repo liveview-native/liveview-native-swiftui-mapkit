@@ -16,9 +16,9 @@ struct TintModifier: ContentModifier {
     
     static let name = "tint"
     
-    let color: Color
+    let color: Color.Resolvable
     
-    init(_ color: Color) {
+    init(_ color: Color.Resolvable) {
         self.color = color
     }
     
@@ -27,6 +27,6 @@ struct TintModifier: ContentModifier {
         on element: ElementNode,
         in context: Builder.Context<R>
     ) -> Builder.Content {
-        content.tint(color)
+        content.tint(color.resolve(on: element, in: LiveContext<R>()))
     }
 }
