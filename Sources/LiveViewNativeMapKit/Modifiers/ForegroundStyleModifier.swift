@@ -23,7 +23,7 @@ struct ForegroundStyleModifier: ContentModifier {
         on element: ElementNode,
         in context: Builder.Context<R>
     ) -> Builder.Content {
-        content.foregroundStyle(style.resolve(on: element, in: LiveContext<R>()))
+        content.foregroundStyle(style.resolve(on: element, in: context.context))
     }
     
     init(_ style: AnyShapeStyle.Resolvable) {
