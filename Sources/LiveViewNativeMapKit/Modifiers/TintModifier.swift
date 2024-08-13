@@ -27,6 +27,6 @@ struct TintModifier: ContentModifier {
         on element: ElementNode,
         in context: Builder.Context<R>
     ) -> Builder.Content {
-        content.tint(color.resolve(on: element, in: LiveContext<R>()))
+        content.tint(color.resolve(on: element, in: context.context))
     }
 }
