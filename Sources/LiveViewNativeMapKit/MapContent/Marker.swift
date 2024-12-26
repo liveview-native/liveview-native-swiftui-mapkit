@@ -69,7 +69,7 @@ struct Marker<R: RootRegistry>: MapContent {
     }
     
     var title: String {
-        switch element.children().first?.data {
+        switch element.children().first?.data() {
         case let .some(.leaf(text)):
             text
         default:

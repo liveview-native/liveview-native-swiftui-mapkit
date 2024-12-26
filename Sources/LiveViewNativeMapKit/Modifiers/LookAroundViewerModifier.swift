@@ -58,14 +58,14 @@ struct LookAroundViewerModifier: ViewModifier {
         allowsNavigation: Bool = true,
         showsRoadLabels: Bool = true,
         pointsOfInterest: PointOfInterestCategories = .all,
-        onDismiss: Event = Event()
+        onDismiss: Event? = nil
     ) {
         self._isPresented = isPresented
         self.initialScene = initialScene
         self.allowsNavigation = allowsNavigation
         self.showsRoadLabels = showsRoadLabels
         self.pointsOfInterest = pointsOfInterest
-        self._onDismiss = onDismiss
+        self._onDismiss = onDismiss ?? Event()
     }
     
     func body(content: Content) -> some View {
